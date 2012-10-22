@@ -38,8 +38,6 @@
    
    The configuration comes in **two** flavors:
    
-   1. Drupal 6.
-
    2. Drupal 7.
     
 Furthermore there are **two** options for each configuration:
@@ -110,13 +108,6 @@ version.
     config in your vhost (`server` block): 
     `include sites-available/drupal_escaped.conf`.
        
-  * On **drupal 6** use the `drupal6.conf` config in your vhost
-    (`server` block): `include sites-availables/drupal6.conf;`.
-    
-  * On **drupal 6** if having to serve URIs that need to be
-    **escaped**, e.g., that have `+` and/or `?` then use the
-    `drupal6_escaped.conf` config in your vhost (`server` block):
-    `include sites-available/drupal6_escaped.conf`.
     
  2. I'm using [Boost](http://drupal.org/project/boost) for caching
       on my drupal site.
@@ -129,13 +120,6 @@ version.
     `drupal_boost_escaped.conf` config in your vhost (`server` block):
     `include sites-available/drupal_boost_escaped.conf`.
 
-  * On **drupal 6** use the `drupal_boost6.conf` config in your vhost
-    (`server` block): `include sites-available/drupal_boost6.conf;`.
-   
-  * On **drupal 6** if having to serve URIs that need to be
-    **escaped**, e.g., that have `+` and/or `?` then use the
-    `drupal_boost6_escaped.conf` config in your vhost (`server`
-    block): `include sites-available/drupal_boost6_escaped.conf`.
    
  3. I'm **not using drush** for updating and running
     cron. Additionally you should also include the
@@ -147,51 +131,6 @@ version.
     
     It's `/core/install.php` instead of `install.php`.
     
-## Boost and Drupal 6
-
-The standard Drupal 6 core sets cookies also for anonymous
-users. Therefore the following map directive from `map_cache.conf`
-will result in the Boost generated pages **not being served**.
-
-    map $http_cookie $no_cache {
-        default 0;
-        ~SESS 1; # PHP session cookie
-    }
-
-If you're using the standard Drupal 6 **without**
-[`no_anon`](http://drupal.org/project/no_anon) then the cache bursting
-map directive is:
-
-    map $http_cookie $no_cache {
-        default 0;
-        ~DRUPAL_UID 1; # PHP session cookie
-    }
-
-This is properly documented in `map_cache.conf`.
-
-## Drupal 6 Global Redirect and the 0 Rewrites Configuration
-
-There's a setting that is enabled by default in
-[`globalredirect`](http://drupal.org/project/globalredirect) that
-removes the trailing slash in the URIs. That setting creates a
-redirect loop with the **0 rewrites config** provided by
-`sites-available/drupal.conf` or `sites-available/drupal_boost.conf`
-if using [Boost](http://drupal.org/project/boost).
-
-There are two ways to deal with that:
-
- 1. Install the module
-    [`nginx_fast_config`](http://drupal.org/project/nginx_fast_config)
-    that takes care of this setting removing it from the settings form
-    at `/admin/settings/globalredirect` and presents a status line on
-    the status page at `/admin/reports/status`. This module fixes the
-    issues for you.
-    
- 2. Take care of the **deslash** setting yourself by disabling it at
-    `/admin/settings/globalredirect`. Note that this is enabled by
-    **default**. 
-    
-This is strictly a **drupal 6** issue.
 
 ## General Features
 

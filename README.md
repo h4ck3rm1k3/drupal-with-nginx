@@ -685,25 +685,7 @@ are **separate** by default.
     domain.
    
  4. Setup the PHP handling method. It can be:
-   
-  + Upstream HTTP server like Apache with mod_php. To use this method
-    comment out the `include upstream_phpcgi.conf;` line in
-    `nginx.conf` and uncomment the lines:
-        
-         include reverse_proxy.conf;
-         include upstream_phpapache.conf;
-
-    Now you must set the proper address and port for your backend(s)
-    in the `upstream_phpapache.conf`. By default it assumes the
-    loopback `127.0.0.1` interface on port `8080`. Adjust
-    accordingly to reflect your setup.
-
-    Comment out **all** `fastcgi_pass` directives in either
-    `drupal_boost.conf` or `drupal_boost_drush.conf`, depending which
-    config layout you're using. Uncomment out all the `proxy_pass`
-    directives. They have a comment around them, stating these
-    instructions.
-      
+         
   + FastCGI process using php-cgi. In this case an
       [init script](https://github.com/perusio/php-fastcgi-debian-script
       "Init script for php-cgi") is required. This is how the server
